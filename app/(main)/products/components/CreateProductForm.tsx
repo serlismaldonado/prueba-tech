@@ -1,12 +1,6 @@
 'use client'
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from '@/components/ui/sheet'
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { useContext } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -25,20 +19,18 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useId } from 'react'
+import { ProductsContext } from './ProductsTable'
 
-export const ProductSchema: z.ZodType<Product> = z.object({
-	code: z.string().min(1, { message: 'Code is required' }),
+export const ProductSchema: z.ZodType<Omit<Product, 'code'>> = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 	stock: z.string().transform((value) => parseInt(value, 10)),
 	price: z.string().transform((value) => parseFloat(value)),
 })
 export default function CreateProductForm() {
-	const { push: router } = useRouter()
+	const { setIsCreated } = useContext(ProductsContext)
 	const form = useForm<z.infer<typeof ProductSchema>>({
 		resolver: zodResolver(ProductSchema),
 		defaultValues: {
-			code: useId(),
 			name: '',
 			stock: 0,
 			price: 0,
@@ -47,8 +39,13 @@ export default function CreateProductForm() {
 
 	function onSubmit(values: z.infer<typeof ProductSchema>) {
 		db.createProduct(values)
+		setIsCreated(true)
+		const close = document.getElementById('close')
 
-		router('/products')
+		if (close) {
+			close.click()
+		}
+
 		form.reset()
 	}
 	return (
@@ -121,7 +118,9 @@ export default function CreateProductForm() {
 
 							<div className='flex justify-end space-x-2 col-span-2'>
 								<Button variant='outline'> Cancelar</Button>
+
 								<Button type='submit'>Crear producto</Button>
+								<SheetClose id='close' />
 							</div>
 						</form>
 					</Form>

@@ -1,18 +1,108 @@
-import { Client, Product, Invoice, Database } from '../types/index'
+import { Client, Product, Invoice, Database, User, Session } from '../types/index'
 
 // Function to initialize the database if it doesn't exist
+const storage = typeof localStorage !== 'undefined' ? localStorage : null
+const sessionStore = typeof sessionStorage !== 'undefined' ? sessionStorage : null
 function initializeDatabase() {
-	const database = localStorage.getItem('database')
+	const database = storage?.getItem('database')
 
 	if (!database) {
 		const initialDatabase: Database = {
 			products: [],
 			clients: [],
 			invoices: [],
+			users: [],
+			sessions: [],
 		}
 
-		localStorage.setItem('database', JSON.stringify(initialDatabase))
+		storage?.setItem('database', JSON.stringify(initialDatabase))
 	}
+}
+
+function createUser(user: User) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.users.push(user)
+	storage?.setItem('database', JSON.stringify(database))
+
+	return user
+}
+
+function deleteUser(user: User) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.users = database.users.filter((u) => u.username !== user.username)
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+function updateUser(user: User) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.users = database.users.map((u) => (u.username === user.username ? user : u))
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+function createSession(session: Session) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.sessions.push(session)
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+function login(username: string, password: string) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	const user = database.users.find((u) => u.username === username && u.password === password)
+
+	if (!user) {
+		return null
+	}
+
+	const session: Session = {
+		token: generateToken(),
+		user,
+	}
+
+	sessionStorage?.setItem('token', session.token)
+
+	createSession(session)
+
+	return session
+}
+
+function getSession() {
+	const currentSession = sessionStorage?.getItem('token')
+
+	if (!currentSession) {
+		return null
+	}
+
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	const session = database.sessions.find((s) => s.token === currentSession)
+
+	if (!session) {
+		return null
+	}
+
+	return session
+}
+
+function logout() {
+	const currentSession = sessionStore?.getItem('token')
+
+	if (!currentSession) {
+		return
+	}
+
+	sessionStorage?.removeItem('token')
+	deleteSession(currentSession)
+}
+
+function deleteSession(token: string) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.sessions = database.sessions.filter((s) => s.token !== token)
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+function updateSession(session: Session) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.sessions = database.sessions.map((s) => (s.token === session.token ? session : s))
+	storage?.setItem('database', JSON.stringify(database))
 }
 
 // Function to generate a token
@@ -21,58 +111,65 @@ function generateToken() {
 }
 
 // Function to get the current session token
-function getSessionToken() {
-	return localStorage.getItem('token')
-}
-
-// Function to set a new session token
-function setSessionToken(token: string) {
-	localStorage.setItem('token', token)
-}
 
 // Function to create a new product
-function createProduct(product: Product) {
-	const database: Database = JSON.parse(localStorage.getItem('database') || '{}')
-	database.products.push(product)
-	localStorage.setItem('database', JSON.stringify(database))
+function createProduct(product: Omit<Product, 'code'>) {
+	const code = Math.random().toString(36).slice(2)
+
+	const newProduct: Product = {
+		...product,
+		code,
+	}
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.products.push(newProduct)
+	storage?.setItem('database', JSON.stringify(database))
 }
 
 function deleteProduct(product: Product) {
-	const database: Database = JSON.parse(localStorage.getItem('database') || '{}')
-	database.products = database.products.filter((p) => p.code !== product.code)
-	localStorage.setItem('database', JSON.stringify(database))
+	const db: Database = JSON.parse(storage?.getItem('database') || '{}')
+	console.log('eliminar el producto', product)
+
+	if (db.products.length > 0) {
+		db.products = db.products.filter((p) => p.code !== product.code)
+		storage?.setItem('database', JSON.stringify(db))
+	}
 }
 
 function updateProduct(product: Product) {
-	const database: Database = JSON.parse(localStorage.getItem('database') || '{}')
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
 	database.products = database.products.map((p) => (p.code === product.code ? product : p))
-	localStorage.setItem('database', JSON.stringify(database))
+	storage?.setItem('database', JSON.stringify(database))
 }
 
 // Function to create a new client
 function createClient(client: Client) {
-	const database: Database = JSON.parse(localStorage.getItem('database') || '{}')
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
 	database.clients.push(client)
-	localStorage.setItem('database', JSON.stringify(database))
+	storage?.setItem('database', JSON.stringify(database))
 }
 
 // Function to create a new invoice
 function createInvoice(invoice: Invoice) {
-	const database: Database = JSON.parse(localStorage.getItem('database') || '{}')
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
 	database.invoices.push(invoice)
-	localStorage.setItem('database', JSON.stringify(database))
+	storage?.setItem('database', JSON.stringify(database))
 }
 
 // Function to get all products
 function getAllProducts() {
-	const database: Database = JSON.parse(localStorage.getItem('database') || '{}')
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
 	return database.products
 }
 
 // Function to get all invoices
 function getAllInvoices() {
-	const database: Database = JSON.parse(localStorage.getItem('database') || '{}')
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
 	return database.invoices
+}
+
+function reset() {
+	storage?.removeItem('database')
+	storage?.removeItem('token')
 }
 
 // Example Usage:
@@ -82,14 +179,24 @@ const db = {
 	products: getAllProducts(),
 	invoices: getAllInvoices(),
 
+	reset,
+
+	login,
+	logout,
+	createUser,
+	deleteUser,
+	updateUser,
+	createSession,
+	deleteSession,
+	updateSession,
+
+	getSession,
+
 	createProduct,
 	deleteProduct,
 	updateProduct,
 	createClient,
 	createInvoice,
-
-	getSessionToken,
-	setSessionToken,
 
 	getAllProducts,
 	getAllInvoices,

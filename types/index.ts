@@ -21,10 +21,22 @@ interface Invoice {
 	total: number
 }
 
+interface User {
+	username: string
+	password: string
+}
+
+interface Session {
+	token: string
+	user: User
+}
+
 interface Database {
 	products: Product[]
 	clients: Client[]
 	invoices: Invoice[]
+	users: User[]
+	sessions: Session[]
 }
 
-export type { Product, Client, Invoice, Database }
+export type { Product, Client, Invoice, User, Session, Database }
