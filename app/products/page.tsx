@@ -1,5 +1,4 @@
 import ProductsTable from './components/ProductsTable'
-import CreateProductForm from './components/CreateProductForm'
 
 export default function Page() {
 	return (
