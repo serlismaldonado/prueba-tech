@@ -142,9 +142,28 @@ function updateProduct(product: Product) {
 }
 
 // Function to create a new client
-function createClient(client: Client) {
+function createClient(client: Omit<Client, 'code'>) {
+	const code = Math.random().toString(36).slice(2)
+	const newClient: Client = {
+		...client,
+		code,
+	}
 	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
-	database.clients.push(client)
+	database.clients.push(newClient)
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+// Function to delete a client
+function deleteClient(client: Client) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.clients = database.clients.filter((c) => c.code !== client.code)
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+// Function to update a client
+function updateClient(client: Client) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.clients = database.clients.map((c) => (c.code === client.code ? client : c))
 	storage?.setItem('database', JSON.stringify(database))
 }
 
@@ -167,6 +186,11 @@ function getAllInvoices() {
 	return database.invoices
 }
 
+function getAllCustomers() {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	return database.clients
+}
+
 function reset() {
 	storage?.removeItem('database')
 	storage?.removeItem('token')
@@ -178,6 +202,7 @@ initializeDatabase()
 const db = {
 	products: getAllProducts(),
 	invoices: getAllInvoices(),
+	clients: getAllCustomers(),
 
 	reset,
 
@@ -195,57 +220,16 @@ const db = {
 	createProduct,
 	deleteProduct,
 	updateProduct,
+
 	createClient,
 	createInvoice,
+	deleteClient,
+	updateClient,
 
 	getAllProducts,
 	getAllInvoices,
-
+	getAllCustomers,
 	generateToken,
 }
 
 export default db
-
-// Simulate user login and session creation
-//   const token = generateToken();
-//   setSessionToken(token);
-
-//   // Simulate creating a product
-
-//   const newProduct: Product = {
-//     code: 'P001',
-//     name: 'Product 1',
-//     stock: 10,
-//     price: 20.5,
-//   };
-
-//   createProduct(newProduct);
-
-//   // Simulate creating a client
-//   const newClient: Client = {
-//     code: 'C001',
-//     name: 'Client 1',
-//     rtn: '123456789',
-//     address: 'Some Address',
-//   };
-
-//   createClient(newClient);
-
-//   // Simulate creating an invoice
-//   const newInvoice: Invoice = {
-//     products: [newProduct],
-//     client: newClient,
-//     type: 'Cash',
-//     subtotal: 20.5,
-//     isv: 3.075,
-//     total: 23.575,
-//   };
-
-//   createInvoice(newInvoice);
-
-//   // Simulate getting all products and invoices
-//   const allProducts = getAllProducts();
-//   const allInvoices = getAllInvoices();
-
-//   console.log('All Products:', allProducts);
-//   console.log('All Invoices:', allInvoices);

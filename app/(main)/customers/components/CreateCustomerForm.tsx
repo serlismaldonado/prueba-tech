@@ -5,7 +5,7 @@ import { useContext } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { Product } from '@/types'
+import { Client } from '@/types'
 import { Button } from '@/components/ui/button'
 import db from '@/local/db'
 import {
@@ -18,26 +18,26 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { ProductsContext } from './ProductsTable'
+import { customersContext } from './CustomersTable'
 
-export const ProductSchema: z.ZodType<Omit<Product, 'code'>> = z.object({
+export const CustumerSchema: z.ZodType<Omit<Client, 'code'>> = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
-	stock: z.string().transform((value) => parseInt(value, 10)),
-	price: z.string().transform((value) => parseFloat(value)),
+	rtn: z.string().min(1, { message: 'Rtn is required' }),
+	address: z.string().min(1, { message: 'Address is required' }),
 })
-export default function CreateProductForm() {
-	const { setIsCreated } = useContext(ProductsContext)
-	const form = useForm<z.infer<typeof ProductSchema>>({
-		resolver: zodResolver(ProductSchema),
+export default function CreateCustomerForm() {
+	const { setIsCreated } = useContext(customersContext)
+	const form = useForm<z.infer<typeof CustumerSchema>>({
+		resolver: zodResolver(CustumerSchema),
 		defaultValues: {
 			name: '',
-			stock: 0,
-			price: 0,
+			rtn: '',
+			address: '',
 		},
 	})
 
-	function onSubmit(values: z.infer<typeof ProductSchema>) {
-		db.createProduct(values)
+	function onSubmit(values: z.infer<typeof CustumerSchema>) {
+		db.createClient(values)
 		setIsCreated(true)
 		const close = document.getElementById('close')
 
@@ -50,13 +50,13 @@ export default function CreateProductForm() {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button>Crear Producto</Button>
+				<Button>Crear Cliente</Button>
 			</SheetTrigger>
 			<SheetContent>
 				<div className=' flex flex-col gap-4'>
 					<div className='flex flex-col '>
-						<h1 className='text-2xl font-bold'>Crear Producto</h1>
-						<p className='text-sm'>Ingresa los datos del nuevo producto</p>
+						<h1 className='text-2xl font-bold'>Crear Cliente</h1>
+						<p className='text-sm'>Ingresa los datos del nuevo Cliente</p>
 					</div>
 					<Form {...form}>
 						<form
@@ -69,9 +69,9 @@ export default function CreateProductForm() {
 									<FormItem className='col-span-2'>
 										<FormLabel>Nombre</FormLabel>
 										<FormControl>
-											<Input placeholder='Nombre del Producto' {...field} />
+											<Input placeholder='Nombre del Cliente' {...field} />
 										</FormControl>
-										<FormDescription>Nombre del Producto</FormDescription>
+										<FormDescription>Nombre del Cliente</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -79,18 +79,19 @@ export default function CreateProductForm() {
 
 							<FormField
 								control={form.control}
-								name='stock'
+								name='rtn'
 								render={({ field }) => (
 									<FormItem className='col-span-1'>
-										<FormLabel>Existencia</FormLabel>
+										<FormLabel>RTN</FormLabel>
 										<FormControl>
 											<Input
-												type='number'
-												placeholder='Existencia del producto'
+												type='text'
+												placeholder='RTN del Cliente'
+												{...field}
 												{...field}
 											/>
 										</FormControl>
-										<FormDescription>Existencia del producto</FormDescription>
+										<FormDescription>RTN del Cliente</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -98,18 +99,18 @@ export default function CreateProductForm() {
 
 							<FormField
 								control={form.control}
-								name='price'
+								name='address'
 								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Precio</FormLabel>
+									<FormItem className='col-span-2'>
+										<FormLabel>Dirección</FormLabel>
 										<FormControl>
 											<Input
-												type='number'
-												placeholder='Precio del producto'
+												type='text'
+												placeholder='Dirección del Cliente'
 												{...field}
 											/>
 										</FormControl>
-										<FormDescription>Precio del producto</FormDescription>
+										<FormDescription>Dirección del Cliente</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -118,7 +119,7 @@ export default function CreateProductForm() {
 							<div className='flex justify-end space-x-2 col-span-2'>
 								<Button variant='outline'> Cancelar</Button>
 
-								<Button type='submit'>Crear producto</Button>
+								<Button type='submit'>Crear Cliente</Button>
 								<SheetClose id='close' />
 							</div>
 						</form>

@@ -4,9 +4,11 @@ import db from '../../local/db'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { usePathname } from 'next/navigation'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const router = useRouter()
+	const pathname = usePathname()
 	const [isLoading, setIsLoading] = useState(true)
 
 	const user = db.getSession()
@@ -39,14 +41,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<div>
 			<div className='flex min-h-screen flex-col bg-stone-200'>
 				<nav className='flex fixed items-center justify-between p-4 bg-stone-800 text-white w-full'>
-					<ul className='flex gap-4'>
-						<li>
+					<ul className='flex gap-4 mx-10 max-sm:mx-2'>
+						<li className={pathname === '/' ? 'font-bold' : ''}>
 							<Link href='/'>Inicio</Link>
 						</li>
-						<li>
+						<li className={pathname === '/products' ? 'font-bold text-green-500' : ''}>
 							<Link href='/products/'>Productos</Link>
 						</li>
-						<li>
+						<li className={pathname === '/customers' ? 'font-bold text-green-500' : ''}>
+							<Link href='/customers/'>Clientes</Link>
+						</li>
+						<li className={pathname === '/invoices' ? 'font-bold text-green-500' : ''}>
 							<Link href='/invoices'>Facturas</Link>
 						</li>
 					</ul>
