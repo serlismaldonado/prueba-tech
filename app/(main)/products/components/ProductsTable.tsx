@@ -15,10 +15,15 @@ import Link from 'next/link'
 import { Pencil1Icon, TrashIcon, UpdateIcon } from '@radix-ui/react-icons'
 import { toast } from 'sonner'
 import CreateProductForm from './CreateProductForm'
+import UpdateProductForm from './UpdateProductForm'
 
 interface ProductContextProps {
 	isCreated: boolean
 	setIsCreated: React.Dispatch<React.SetStateAction<boolean>>
+	isUpdated: boolean
+	setIsUpdated: React.Dispatch<React.SetStateAction<boolean>>
+	itemToUpdate: Product | null
+	setItemToUpdate: React.Dispatch<React.SetStateAction<Product | null>>
 }
 export const ProductsContext = createContext({} as ProductContextProps)
 export default function ProductsTable() {
@@ -27,6 +32,7 @@ export default function ProductsTable() {
 	const [isCreated, setIsCreated] = useState(false)
 	const [isUpdated, setIsUpdated] = useState(false)
 	const [isDeleted, setIsDeleted] = useState(false)
+	const [itemToUpdate, setItemToUpdate] = useState<Product | null>(null)
 	const [isUndo, setIsUndo] = useState(false)
 	useEffect(() => {
 		setProducts(db.getAllProducts())
@@ -37,7 +43,15 @@ export default function ProductsTable() {
 	}, [isCreated, isUpdated, isDeleted, isUndo])
 
 	return (
-		<ProductsContext.Provider value={{ isCreated, setIsCreated }}>
+		<ProductsContext.Provider
+			value={{
+				isCreated,
+				setIsCreated,
+				isUpdated,
+				setIsUpdated,
+				itemToUpdate,
+				setItemToUpdate,
+			}}>
 			<div className='mt-8 p-4 bg-white rounded-md shadow-md '>
 				<div className='flex justify-between'>
 					<div>
@@ -53,7 +67,7 @@ export default function ProductsTable() {
 							<TableHead>Nombre</TableHead>
 							<TableHead>Existencia</TableHead>
 							<TableHead> Precio</TableHead>
-							<TableHead> acciones</TableHead>
+							<TableHead className='flex gap-2 items-end justify-end'> </TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -63,14 +77,14 @@ export default function ProductsTable() {
 								<TableCell>{product.name}</TableCell>
 								<TableCell>{product.stock}</TableCell>
 								<TableCell>{product.price}</TableCell>
-								<TableCell className='flex gap-2'>
-									<Button variant='outline'>
-										<Link href={`/products/${product.code}/edit`}>
-											<Pencil1Icon
-												className='text-blue-500 w-5 h-5'
-												strokeWidth={2}
-											/>
-										</Link>
+								<TableCell className='flex gap-2 items-end justify-end'>
+									<Button
+										variant='outline'
+										onClick={() => setItemToUpdate(product)}>
+										<Pencil1Icon
+											className='text-blue-500 w-5 h-5'
+											strokeWidth={2}
+										/>
 									</Button>
 
 									<Button
@@ -98,6 +112,8 @@ export default function ProductsTable() {
 						))}
 					</TableBody>
 				</Table>
+
+				<UpdateProductForm />
 			</div>
 		</ProductsContext.Provider>
 	)

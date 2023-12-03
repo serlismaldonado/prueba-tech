@@ -69,7 +69,7 @@ export default function CustomersTable() {
 							<TableHead>Nombre</TableHead>
 							<TableHead>RTN</TableHead>
 							<TableHead> Domicilio</TableHead>
-							<TableHead> acciones</TableHead>
+							<TableHead className='flex gap-2 items-end justify-end'> </TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -79,7 +79,7 @@ export default function CustomersTable() {
 								<TableCell>{customer.name}</TableCell>
 								<TableCell>{customer.rtn}</TableCell>
 								<TableCell>{customer.address}</TableCell>
-								<TableCell className='flex gap-2'>
+								<TableCell className='flex gap-2 items-end justify-end'>
 									<Button
 										variant='outline'
 										onClick={() => setItemToUpdate(customer)}>

@@ -10,6 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	const router = useRouter()
 	const pathname = usePathname()
 	const [isLoading, setIsLoading] = useState(true)
+	const [active, setActive] = useState(pathname)
 
 	const user = db.getSession()
 
@@ -20,6 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	useEffect(() => {
 		setIsLoading(false)
 	}, [user])
+
+	useEffect(() => {
+		setActive(pathname)
+	}, [pathname])
 
 	if (isLoading) {
 		return (
@@ -45,17 +50,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<li className={pathname === '/' ? 'font-bold' : ''}>
 							<Link href='/'>Inicio</Link>
 						</li>
-						<li className={pathname === '/products' ? 'font-bold text-green-500' : ''}>
+						<li className={active === '/products' ? 'font-bold text-green-500' : ''}>
 							<Link href='/products/'>Productos</Link>
 						</li>
-						<li className={pathname === '/customers' ? 'font-bold text-green-500' : ''}>
+						<li className={active === '/customers' ? 'font-bold text-green-500' : ''}>
 							<Link href='/customers/'>Clientes</Link>
 						</li>
-						<li className={pathname === '/invoices' ? 'font-bold text-green-500' : ''}>
+						<li className={active === '/invoices' ? 'font-bold text-green-500' : ''}>
 							<Link href='/invoices'>Facturas</Link>
 						</li>
 					</ul>
-					<div className='flex gap-4 self-end'>
+
+					<div className='flex gap-4 self-end items-center'>
+						<p className='font-bold max-sm:hidden'>
+							{' '}
+							Bienvenido {user?.user.username}!
+						</p>
 						<Button
 							variant={'outline'}
 							onClick={() => {
