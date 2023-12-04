@@ -12,10 +12,11 @@ export default function InvoicesByPaymentMethod() {
 
 	Chart.register(...registerables)
 	return (
-		<div className='flex flex-col justify-between bg-white rounded-md p-4 shadow-md w-fit'>
+		<div className='flex flex-col  bg-white dark:bg-stone-800 rounded-md p-4 shadow-md '>
 			<h1 className='text-lg font-bold'>Facturas por Metodo de Pago</h1>
-			<div className='flex justify-center w-fit'>
+			<div className='flex justify-center items-center justify-self-center self-center '>
 				<Doughnut
+					className='bg-white dark:bg-stone-800 dark:text-white w-[200px] h-[200px]'
 					data={{
 						labels: ['Efectivo', 'Credito'],
 						datasets: [

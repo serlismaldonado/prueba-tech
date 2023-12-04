@@ -35,10 +35,11 @@ export default function Page() {
 
 	return (
 		<div className='md:container max-sm:px-5  mt-8 flex flex-col w-full h-full justify-center items-center'>
-			<div className='flex flex-col items-center bg-white rounded-lg shadow-md p-4'>
-				<h1 className='text-lg font-bold'>SignUp</h1>
-				<p className='text-sm'>Ingresa tus credenciales</p>
-
+			<div className='flex flex-col items-center bg-white dark:bg-stone-800 rounded-lg shadow-md p-4 gap-2'>
+				<div className='flex flex-col items-center'>
+					<h1 className='text-lg font-bold'>Registrate</h1>
+					<p className='text-sm'>Ingresa tus credenciales</p>
+				</div>
 				<Form {...form}>
 					<form className='flex flex-col gap-4' onSubmit={form.handleSubmit(onSubmit)}>
 						<FormField
@@ -46,8 +47,8 @@ export default function Page() {
 							name='username'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Username</FormLabel>
-									<Input {...field} type='text' />
+									<FormLabel>Nombre de usuario</FormLabel>
+									<Input className='dark:bg-stone-700' {...field} type='text' />
 
 									<FormMessage />
 								</FormItem>
@@ -58,8 +59,9 @@ export default function Page() {
 							name='password'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Password</FormLabel>
+									<FormLabel>Contraseña</FormLabel>
 									<Input
+										className='dark:bg-stone-700'
 										{...field}
 										type='password'
 										autoComplete='current-password'

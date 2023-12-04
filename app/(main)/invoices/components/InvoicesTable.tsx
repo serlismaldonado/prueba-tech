@@ -53,7 +53,7 @@ export default function InvoicesTable() {
 				itemToUpdate,
 				setItemToUpdate,
 			}}>
-			<div className='mt-8 p-4 bg-white rounded-md shadow-md '>
+			<div className='mt-8 p-4 bg-white rounded-md shadow-md dark:bg-stone-800'>
 				<div className='flex justify-between'>
 					<div>
 						<h1 className='text-xl font-bold'>Facturas</h1>
@@ -100,15 +100,6 @@ export default function InvoicesTable() {
 								<TableCell>{invoice.isv}</TableCell>
 								<TableCell>{invoice.total}</TableCell>
 								<TableCell className='flex gap-2 items-end justify-end'>
-									<Button
-										variant='outline'
-										onClick={() => setItemToUpdate(invoice)}>
-										<Pencil1Icon
-											className='text-blue-500 w-5 h-5'
-											strokeWidth={2}
-										/>
-									</Button>
-
 									<Button
 										variant='outline'
 										onClick={() => {

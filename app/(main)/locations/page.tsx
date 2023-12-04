@@ -1,5 +1,7 @@
+// page.js
 'use client'
-import InvoicesTable from './components/InvoicesTable'
+
+import MapLocations from './components/MapLocations'
 
 export default function Page() {
 	return (
@@ -7,7 +9,7 @@ export default function Page() {
 			<div className='flex justify-between'>
 				<h1 className='text-3xl font-bold'>Facturas</h1>
 			</div>
-			<InvoicesTable />
+			<MapLocations />
 		</div>
 	)
 }

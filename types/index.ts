@@ -10,6 +10,8 @@ interface Client {
 	name: string
 	rtn: string
 	address: string
+	lat?: number | string
+	lng?: number | string
 }
 
 interface Invoice {
