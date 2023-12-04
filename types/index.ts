@@ -13,18 +13,32 @@ interface Client {
 }
 
 interface Invoice {
+	code: string
+	createdAt: Date | string
 	products: Product[]
-	client: Client
-	interface: 'Cash' | 'Credit'
-	subtotal: number
-	isv: number
-	total: number
+	clientId: string
+	paymentMethod: 'Cash' | 'Credit'
+	subtotal: number | string
+	isv: number | string
+	total: number | string
+}
+
+interface User {
+	username: string
+	password: string
+}
+
+interface Session {
+	token: string
+	user: User
 }
 
 interface Database {
 	products: Product[]
 	clients: Client[]
 	invoices: Invoice[]
+	users: User[]
+	sessions: Session[]
 }
 
-export type { Product, Client, Invoice, Database }
+export type { Product, Client, Invoice, User, Session, Database }
