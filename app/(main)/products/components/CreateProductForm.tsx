@@ -116,7 +116,14 @@ export default function CreateProductForm() {
 							/>
 
 							<div className='flex justify-end space-x-2 col-span-2'>
-								<Button variant='outline'> Cancelar</Button>
+								<SheetClose>
+									<Button
+										variant='outline'
+										id='close'
+										onClick={() => form.reset()}>
+										Cancelar
+									</Button>
+								</SheetClose>
 
 								<Button type='submit'>Crear producto</Button>
 								<SheetClose id='close' />

@@ -98,16 +98,16 @@ export default function UpdateCustomerform() {
 								name='stock'
 								render={({ field }) => (
 									<FormItem className='col-span-1'>
-										<FormLabel>RTN</FormLabel>
+										<FormLabel>Existencia</FormLabel>
 										<FormControl>
 											<Input
 												type='number'
-												placeholder='RTN del producto'
+												placeholder='Existencia del producto'
 												{...field}
 												{...field}
 											/>
 										</FormControl>
-										<FormDescription>RTN del producto</FormDescription>
+										<FormDescription>Existencia del producto</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}

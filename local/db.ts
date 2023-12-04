@@ -168,9 +168,30 @@ function updateClient(client: Client) {
 }
 
 // Function to create a new invoice
-function createInvoice(invoice: Invoice) {
+function createInvoice(invoice: Omit<Invoice, 'code'>) {
+	const code = Math.random().toString(36).slice(2)
+
+	const newInvoice: Invoice = {
+		...invoice,
+		code,
+		createdAt: new Date(),
+	}
 	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
-	database.invoices.push(invoice)
+	database.invoices.push(newInvoice)
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+// Function to delete a invoice
+function deleteInvoice(invoice: Invoice) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.invoices = database.invoices.filter((i) => i.code !== invoice.code)
+	storage?.setItem('database', JSON.stringify(database))
+}
+
+// Function to update a invoice
+function updateInvoice(invoice: Invoice) {
+	const database: Database = JSON.parse(storage?.getItem('database') || '{}')
+	database.invoices = database.invoices.map((i) => (i.code === invoice.code ? invoice : i))
 	storage?.setItem('database', JSON.stringify(database))
 }
 
@@ -208,21 +229,25 @@ const db = {
 
 	login,
 	logout,
+
 	createUser,
 	deleteUser,
 	updateUser,
+
 	createSession,
 	deleteSession,
 	updateSession,
-
 	getSession,
 
 	createProduct,
 	deleteProduct,
 	updateProduct,
 
-	createClient,
 	createInvoice,
+	deleteInvoice,
+	updateInvoice,
+
+	createClient,
 	deleteClient,
 	updateClient,
 

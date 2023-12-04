@@ -13,12 +13,14 @@ interface Client {
 }
 
 interface Invoice {
+	code: string
+	createdAt: Date | string
 	products: Product[]
-	client: Client
-	interface: 'Cash' | 'Credit'
-	subtotal: number
-	isv: number
-	total: number
+	clientId: string
+	paymentMethod: 'Cash' | 'Credit'
+	subtotal: number | string
+	isv: number | string
+	total: number | string
 }
 
 interface User {
