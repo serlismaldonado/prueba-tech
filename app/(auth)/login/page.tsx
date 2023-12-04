@@ -32,7 +32,6 @@ export default function Page() {
 	})
 
 	function onSubmit(values: z.infer<typeof loginSchema>) {
-		console.log(values)
 		db.login(values.username, values.password)
 		router.push('/')
 	}

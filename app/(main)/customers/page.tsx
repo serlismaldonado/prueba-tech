@@ -1,3 +1,4 @@
+'use client'
 import CustomersTable from './components/CustomersTable'
 
 export default function Page() {

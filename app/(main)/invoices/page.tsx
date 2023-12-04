@@ -1,3 +1,4 @@
+'use client'
 import InvoicesByPaymentMethod from './components/InvoicesByPaymentMethod'
 import InvoicesTable from './components/InvoicesTable'
 
