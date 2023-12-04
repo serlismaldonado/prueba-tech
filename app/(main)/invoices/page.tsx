@@ -1,11 +1,10 @@
+import InvoicesByPaymentMethod from './components/InvoicesByPaymentMethod'
 import InvoicesTable from './components/InvoicesTable'
 
 export default function Page() {
 	return (
-		<div>
-			<div className=' flex justify-between'>
-				<h1 className='text-3xl font-bold'>Facturas</h1>
-			</div>
+		<div className='mt-8 gap-4 p-4'>
+			<InvoicesByPaymentMethod />
 			<InvoicesTable />
 		</div>
 	)

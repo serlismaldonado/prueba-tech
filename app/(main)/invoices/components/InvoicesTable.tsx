@@ -64,6 +64,7 @@ export default function InvoicesTable() {
 				<Table>
 					<TableHeader>
 						<TableRow>
+							<TableHead>#</TableHead>
 							<TableHead>Código</TableHead>
 							<TableHead>Fecha</TableHead>
 							<TableHead>Cliente</TableHead>
@@ -75,8 +76,9 @@ export default function InvoicesTable() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{invoices.map((invoice) => (
+						{invoices.map((invoice, index) => (
 							<TableRow key={Math.random().toString(36).slice(2)}>
+								<TableCell>{index + 1}</TableCell>
 								<TableCell>{invoice.code}</TableCell>
 								<TableCell>
 									{typeof invoice.createdAt === 'string' &&

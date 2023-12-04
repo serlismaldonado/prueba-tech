@@ -2,7 +2,7 @@ import { Client, Product, Invoice, Database, User, Session } from '../types/inde
 
 // Function to initialize the database if it doesn't exist
 const storage = typeof localStorage !== 'undefined' ? localStorage : null
-const sessionStore = typeof sessionStorage !== 'undefined' ? sessionStorage : null
+const sessionStore = typeof sessionStorage !== 'undefined' ? localStorage : null
 function initializeDatabase() {
 	const database = storage?.getItem('database')
 
@@ -58,7 +58,7 @@ function login(username: string, password: string) {
 		user,
 	}
 
-	sessionStorage?.setItem('token', session.token)
+	sessionStore?.setItem('token', session.token)
 
 	createSession(session)
 
@@ -66,7 +66,7 @@ function login(username: string, password: string) {
 }
 
 function getSession() {
-	const currentSession = sessionStorage?.getItem('token')
+	const currentSession = sessionStore?.getItem('token')
 
 	if (!currentSession) {
 		return null
