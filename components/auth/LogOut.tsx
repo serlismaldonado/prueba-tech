@@ -14,7 +14,7 @@ export default function LogOut() {
 					db.logout()
 					router.push('/login')
 				}}>
-				Logout
+				Cerrar sesión
 			</Button>
 		</div>
 	)

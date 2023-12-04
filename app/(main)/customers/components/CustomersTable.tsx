@@ -54,7 +54,7 @@ export default function CustomersTable() {
 				itemToUpdate,
 				setItemToUpdate,
 			}}>
-			<div className='mt-8 p-4 bg-white rounded-md shadow-md '>
+			<div className='mt-8 p-4 bg-white dark:bg-stone-800 rounded-md shadow-md '>
 				<div className='flex justify-between'>
 					<div>
 						<h1 className='text-xl font-bold'>Clientes</h1>

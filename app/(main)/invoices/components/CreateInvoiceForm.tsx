@@ -140,7 +140,9 @@ export default function CreateInvoiceForm() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button>Crear Factura</Button>
+				<Button className='dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600'>
+					Crear Factura
+				</Button>
 			</DialogTrigger>
 			<DialogContent className=' w-full min-w-[500px] max-sm:w-[90%] max-sm:min-w-[200px]'>
 				<div className=' flex flex-col gap-4'>

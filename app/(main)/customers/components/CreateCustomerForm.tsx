@@ -24,6 +24,8 @@ export const CustumerSchema: z.ZodType<Omit<Client, 'code'>> = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 	rtn: z.string().min(1, { message: 'Rtn is required' }),
 	address: z.string().min(1, { message: 'Address is required' }),
+	lat: z.string().transform((value) => Number(value)),
+	lng: z.string().transform((value) => Number(value)),
 })
 export default function CreateCustomerForm() {
 	const { setIsCreated } = useContext(customersContext)
@@ -33,6 +35,8 @@ export default function CreateCustomerForm() {
 			name: '',
 			rtn: '',
 			address: '',
+			lat: 0,
+			lng: 0,
 		},
 	})
 
@@ -50,7 +54,9 @@ export default function CreateCustomerForm() {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button>Crear Cliente</Button>
+				<Button className='dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600'>
+					Crear Cliente
+				</Button>
 			</SheetTrigger>
 			<SheetContent>
 				<div className=' flex flex-col gap-4'>
@@ -111,6 +117,44 @@ export default function CreateCustomerForm() {
 											/>
 										</FormControl>
 										<FormDescription>Dirección del Cliente</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name='lat'
+								render={({ field }) => (
+									<FormItem className='col-span-1'>
+										<FormLabel>Latitud</FormLabel>
+										<FormControl>
+											<Input
+												type='number'
+												placeholder='Latitud del Cliente'
+												{...field}
+											/>
+										</FormControl>
+										<FormDescription>Latitud del Cliente</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name='lng'
+								render={({ field }) => (
+									<FormItem className='col-span-1'>
+										<FormLabel>Longitud</FormLabel>
+										<FormControl>
+											<Input
+												type='number'
+												placeholder='Longitud del Cliente'
+												{...field}
+											/>
+										</FormControl>
+										<FormDescription>Longitud del Cliente</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}

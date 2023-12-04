@@ -50,7 +50,9 @@ export default function CreateProductForm() {
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
-				<Button>Crear Producto</Button>
+				<Button className='dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600'>
+					Crear Producto
+				</Button>
 			</SheetTrigger>
 			<SheetContent>
 				<div className=' flex flex-col gap-4'>

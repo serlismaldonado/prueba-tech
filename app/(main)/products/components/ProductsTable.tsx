@@ -52,7 +52,7 @@ export default function ProductsTable() {
 				itemToUpdate,
 				setItemToUpdate,
 			}}>
-			<div className='mt-8 p-4 bg-white rounded-md shadow-md '>
+			<div className='mt-8 p-4 bg-white rounded-md shadow-md dark:bg-stone-800'>
 				<div className='flex justify-between'>
 					<div>
 						<h1 className='text-xl font-bold'>Productos</h1>
