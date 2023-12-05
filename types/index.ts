@@ -43,4 +43,13 @@ interface Database {
 	sessions: Session[]
 }
 
-export type { Product, Client, Invoice, User, Session, Database }
+interface DriveFile {
+	kind: string
+	id: string
+	name: string
+	mimeType: string
+}
+
+mimeType: 'application/vnd.google-apps.document'
+
+export type { Product, Client, Invoice, User, Session, Database, DriveFile }
